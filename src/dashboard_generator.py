@@ -118,6 +118,8 @@ def shutdown_server(signal, frame):
 
 # Main function
 def main():
+    logger.debug("GENERIK DASHBOARD SERVER STARTED")
+
     page_title = os.getenv('TITLE', 'GENERIK DASHBOARD')
     app_port = int(os.getenv('PORT', 5877))
     theme_class = os.getenv('THEME', 'light')
@@ -130,10 +132,14 @@ def main():
         logger.error("Error: Missing required environment variable PORT")
         exit(1)
 
+    logger.debug("SETTINGS LOADED")
+
     csv_file = "/config/services.csv"
     services = read_services_from_csv(csv_file)
+    logger.debug("SERVICES FILE LOADED")
     html_content = generate_dashboard_html(services, page_title, theme_class, footer_content)
     save_html_to_file(html_content)
+    logger.debug("HTML FILE GENERATED")
     start_http_server(app_port)
 
 if __name__ == "__main__":

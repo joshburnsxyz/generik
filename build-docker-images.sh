@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-TAGVAL=0.1.0
+TAGVAL=0.1.1
 
 git tag $TAGVAL
 git push --all

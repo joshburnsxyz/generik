@@ -30,11 +30,12 @@ footer {
     margin: 10px;
 }
 .category-title {
-    font-size: 1.5em;
+    font-size: 1.8em;
     text-align: center;
     padding: 10px;
     background-color: #f0f0f0;
     border-radius: 5px;
+    margin-bottom: 5px;
 }
 .service {
     background-color: #fff;

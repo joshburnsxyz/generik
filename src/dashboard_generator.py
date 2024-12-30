@@ -97,8 +97,8 @@ def generate_dashboard_html(services, page_title, theme_class, footer_content, i
 
     if icon_script == "dashboard":
         html_content = html_content.replace("{{icon_script}}", "<script type=\"text/javascript\" src=\"/assets/dashboard-icons.js\"></script>")
-    if icon_script == "fontawesome":
-        html_content = html_content.replace("{{icon_script}}", "<script type=\"text/javascript\" src=\"/assets/fa-icons.js\"></script>")
+    if icon_script == "simple":
+        html_content = html_content.replace("{{icon_script}}", "<script type=\"text/javascript\" src=\"/assets/simple-icons.js\"></script>")
     if icon_script == "none":
         html_content = html_content.replace("{{icon_script}}", "")
     return html_content

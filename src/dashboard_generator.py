@@ -49,7 +49,7 @@ def read_services_from_csv(csv_file):
     return services
 
 # Function to generate the HTML content
-def generate_dashboard_html(services, page_title, theme_class):
+def generate_dashboard_html(services, page_title, theme_class, foooter_content):
     services_json = json.dumps(services)
 
     html_content = f"""
@@ -316,6 +316,7 @@ body.solardark-theme .service:hover {{
 
     # Closing HTML tags
     html_content += f"""
+        <footer>{footer_content}</footer>
         </div>
     </body>
     </html>
@@ -346,6 +347,7 @@ def main():
     page_title = os.getenv('TITLE', 'GENERIK DASHBOARD')  # Default title if not set
     app_port = int(os.getenv('PORT', 5877))  # Default port if not set
     selected_theme = os.getenv('THEME', 'light_theme')  # Default theme if not set
+    selected_theme = os.getenv('FOOTER', '<p>Built by <a href="https://github.com/joshburnsxyz">Josh Burns</a></p>, Provided under the MIT Open-Source License.')  # Default footer content
 
     if not page_title:
         logger.error("Error: Missing required environment variable TITLE")
@@ -356,7 +358,7 @@ def main():
 
     csv_file = "/config/services.csv"  # Mount /config as a bind directory from Docker and create services.csv in there
     services = read_services_from_csv(csv_file)
-    html_content = generate_dashboard_html(services, page_title, selected_theme)
+    html_content = generate_dashboard_html(services, page_title, selected_theme, footer_content)
     save_html_to_file(html_content)
     start_http_server(app_port)  # Start the HTTP server on the port defined by environment variable
 

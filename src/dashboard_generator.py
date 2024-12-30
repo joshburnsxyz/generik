@@ -8,14 +8,23 @@ from pathlib import Path
 # Function to read CSV and return a list of services
 def read_services_from_csv(csv_file):
     services = []
-    with open(csv_file, mode='r') as file:
-        reader = csv.DictReader(file)
-        for row in reader:
-            services.append({
-                'name': row['Name'],
-                'url': row['URL'],
-                'category': row['Category']
-            })
+    try:
+        with open(csv_file, mode='r') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                services.append({
+                    'name': row['Name'],
+                    'url': row['URL'],
+                    'category': row['Category']
+                })
+        if not services:
+            raise ValueError("CSV file is empty")
+    except FileNotFoundError:
+        print(f"Error: The CSV file '{csv_file}' was not found.")
+        exit(1)
+    except ValueError as e:
+        print(f"Error: {e}")
+        exit(1)
     return services
 
 # Function to generate the HTML content
@@ -75,19 +84,6 @@ def generate_dashboard_html(services, page_title):
                 color: #333;
                 font-size: 1.1em;
             }}
-            .status {{
-                width: 20px;
-                height: 20px;
-                border-radius: 50%;
-                background-color: grey;
-                transition: background-color 0.3s ease;
-            }}
-            .status.up {{
-                background-color: green;
-            }}
-            .status.down {{
-                background-color: red;
-            }}
             .service:hover {{
                 box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             }}
@@ -116,7 +112,6 @@ def generate_dashboard_html(services, page_title):
             html_content += f'''
             <div class="service" id="service-{service['name']}">
                 <a href="{service['url']}" target="_blank">{service['name']}</a>
-                <div class="status" id="status-{service['name']}"></div>
             </div>
             '''
         html_content += "</div>"  # Close category-container
@@ -124,30 +119,6 @@ def generate_dashboard_html(services, page_title):
     # Closing HTML tags
     html_content += f"""
         </div>
-
-        <script>
-            const services = {services_json};
-
-            function checkServiceStatus() {{
-                services.forEach(service => {{
-                    fetch(service.url, {{ method: 'GET', mode: 'no-cors' }}).then(response => {{
-                        if (response.status === 200) {{
-                            document.getElementById('status-' + service.name).classList.add('up');
-                            document.getElementById('status-' + service.name).classList.remove('down');
-                        }} else {{
-                            document.getElementById('status-' + service.name).classList.add('down');
-                            document.getElementById('status-' + service.name).classList.remove('up');
-                        }}
-                    }}).catch(() => {{
-                        document.getElementById('status-' + service.name).classList.add('down');
-                        document.getElementById('status-' + service.name).classList.remove('up');
-                    }});
-                }});
-            }}
-
-            setInterval(checkServiceStatus, 5000); // Check every 5 seconds
-            checkServiceStatus(); // Initial check
-        </script>
     </body>
     </html>
     """
@@ -167,21 +138,28 @@ def save_html_to_file(html_content, filename="dashboard.html"):
 def start_http_server(port):
     os.chdir("/var/www/html")  # Set the working directory to where the HTML file is saved
     handler = http.server.SimpleHTTPRequestHandler
-    httpd = socketserver.TCPServer(("", int(port)), handler)
+    httpd = socketserver.TCPServer(("", port), handler)
     print(f"Serving at http://localhost:{port}")
     httpd.serve_forever()
 
 # Main function
 def main():
     # Pull in settings from environment
-    page_title = os.environ['TITLE']
-    app_port = os.environ['PORT']
+    page_title = os.getenv('TITLE', 'GENERIK DASHBOARD')  # Default title if not set
+    app_port = int(os.getenv('PORT', 5877))  # Default port if not set
+
+    if not page_title:
+        print("Error: Missing required environment variable TITLE")
+        exit(1)
+    if not app_port:
+        print("Error: Missing required environment variable PORT")
+        exit(1)
 
     csv_file = "/config/services.csv"  # Mount /config as a bind directory from Docker and create services.csv in there
     services = read_services_from_csv(csv_file)
-    html_content = generate_dashboard_html(services,page_title)
+    html_content = generate_dashboard_html(services, page_title)
     save_html_to_file(html_content)
-    start_http_server(app_port)  # Start the HTTP server on port defined by environment variable
+    start_http_server(app_port)  # Start the HTTP server on the port defined by environment variable
 
 if __name__ == "__main__":
     main()

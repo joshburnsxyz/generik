@@ -23,4 +23,7 @@ ENV THEME="solarlight"
 
 EXPOSE $PORT
 
+HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
+  CMD curl --fail http://localhost:$PORT || exit 1
+
 ENTRYPOINT [ "python", "/app/dashboard_generator.py" ]

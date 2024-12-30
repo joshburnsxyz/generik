@@ -19,16 +19,23 @@ def read_services_from_csv(csv_file):
         with open(csv_file, mode='r') as file:
             reader = csv.DictReader(file)
             for row in reader:
-                services.append({
-                    'name': row['Name'],
-                    'url': row['URL'],
-                    'category': row['Category']
-                })
+                # Check that necessary columns exist
+                if 'Name' in row and 'URL' in row and 'Category' in row:
+                    services.append({
+                        'name': row['Name'],
+                        'url': row['URL'],
+                        'category': row['Category']
+                    })
+                else:
+                    print(f"Warning: Skipping malformed row: {row}")
+        
+        # If services list is empty, fill with default data
         if not services:
-            print(f"Warning: The {csv_file} file is empty. Creating a default set of services.")
+            print(f"Warning: The {csv_file} file is empty or malformed. Creating a default set of services.")
             with open(csv_file, "w") as f:
                 f.write("Name,URL,Category\nGithub,https://github.com,Developer\nYoutube,https://youtube.com,Media")
-            services = read_services_from_csv(csv_file)  # Re-read after writing default content
+            # Re-read after writing default content
+            services = read_services_from_csv(csv_file)
     except Exception as e:
         print(f"Error reading {csv_file}: {e}")
         exit(1)

@@ -3,12 +3,11 @@ FROM python:3.11-slim
 WORKDIR /app
 
 COPY ./src/* /app
-RUN pip install --no-cache-dir -r requirements.txt
+# RUN pip install --no-cache-dir -r requirements.txt
 
-# EXPOSE 8577
+ENV PORT=8577
+ENV TITLE="GENERIK DASHBOARD"
 
-# Run the Python script when the container starts to generate the dashboard
-RUN python dashboard_generator.py
+EXPOSE 8577
 
-# TODO: Boot up small webserver to serve the static web page
-# CMD server /html/index.html
+CMD [ "python", "/app/dashboard_generator.py" ]

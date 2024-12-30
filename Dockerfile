@@ -13,7 +13,7 @@ RUN mkdir -p /var/www/html
 
 COPY ./src/dashboard_generator.py /app
 COPY ./src/template.html /app
-COPY ./src/assets/* /var/www/html/assets
+COPY ./src/assets /var/www/html/assets
 
 # RUN pip install --no-cache-dir -r requirements.txt
 

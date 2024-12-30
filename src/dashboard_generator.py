@@ -9,8 +9,28 @@ import signal
 import sys
 
 # Global logger setup
-logging.basicConfig(filename='/config/generik.log', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
+
+# Define log format
+log_format = '%(asctime)s - %(levelname)s - %(message)s'
+
+# Create a console handler to log to STDOUT (console)
+console_handler = logging.StreamHandler(sys.stdout)
+console_handler.setLevel(logging.DEBUG)  # Set to DEBUG level to capture all logs
+console_handler.setFormatter(logging.Formatter(log_format))
+
+# Create a file handler to log to a file
+file_handler = logging.FileHandler('/config/generik.log')
+file_handler.setLevel(logging.DEBUG)  # Set to DEBUG level to capture all logs
+file_handler.setFormatter(logging.Formatter(log_format))
+
+# Add both handlers to the logger
+logger.addHandler(console_handler)
+logger.addHandler(file_handler)
+
+# Set global logging level
+logger.setLevel(logging.DEBUG)
+
 
 DEFAULT_CSV_CONTENT = "Name,URL,Category\nGithub,https://github.com,Developer\nYoutube,https://youtube.com,Media"
 

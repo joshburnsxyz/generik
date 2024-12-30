@@ -35,6 +35,7 @@ docker run \
     -e PORT="5877" \ # Set port the server will run on (must also reflect the forward port) (optional)
     -e TITLE="My Dashboard" \ # Set the page title and heading (optional)
     -e FOOTER="<p>Some HTML here</p>" \ # Set the HTML for the page footer (optional)
+    -e ICONS="dashboard" \ # Set the icon theme to use (dashboard,fontawesome,none are all accepted values) (optional)
     joshburnsxyz/generik:latest
 ```
 
@@ -53,6 +54,7 @@ services:
       PORT: 5877
       THEME: "solarlight"
       FOOTER: "<p>Powered by <a href='https://github.com/joshburnsxyz/generik'>Generik Dash</a></p>"
+      ICONS: "dashboard"
 ```
 
 ```console

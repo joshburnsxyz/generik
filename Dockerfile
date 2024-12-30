@@ -20,6 +20,6 @@ ENV PORT=8577
 ENV TITLE="GENERIK DASHBOARD"
 ENV THEME="solarlight"
 
-EXPOSE 8577
+EXPOSE $PORT
 
 ENTRYPOINT [ "python", "/app/dashboard_generator.py" ]

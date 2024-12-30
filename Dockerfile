@@ -11,7 +11,7 @@ WORKDIR /app
 RUN mkdir -p /var/www/html
 
 COPY ./src/dashboard_generator.py /app
-COPY ./src/themes.css /var/www/html
+COPY ./src/assets /var/www/html/assets
 
 # RUN pip install --no-cache-dir -r requirements.txt
 

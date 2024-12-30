@@ -48,7 +48,7 @@ def generate_dashboard_html(services, page_title, theme_class):
 
     html_content = f"""
     <!DOCTYPE html>
-    <html lang="en" class="{theme_class}>
+    <html lang="en" >
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -109,6 +109,36 @@ body.solarlight-theme .category-container {{
     color: #586e75;
 }}
 
+body.solarlight-theme .category-title {{
+    background-color: #93a1a1;
+    color: #fdf6e3;
+}}
+
+body.solarlight-theme .service {{
+    background-color: #fdf6e3;
+    color: #657b83;
+    border: 1px solid #93a1a1;
+}}
+
+body.solarlight-theme .service a {{
+    color: #268bd2;
+}}
+
+body.solarlight-theme .service a:hover {{
+    color: #268bd2;
+}}
+
+/* Hover effects for category containers and services */
+body.solarlight-theme .category-container:hover {{
+    background-color: #dce0e0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}}
+
+body.solarlight-theme .service:hover {{
+    background-color: #eee8d5;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}}
+
 /* Solardark Theme */
 body.solardark-theme {{
     background-color: #002b36;
@@ -123,6 +153,36 @@ body.solardark-theme .container {{
 body.solardark-theme .category-container {{
     background-color: #073642;
     color: #93a1a1;
+}}
+
+body.solardark-theme .category-title {{
+    background-color: #586e75;
+    color: #fdf6e3;
+}}
+
+body.solardark-theme .service {{
+    background-color: #073642;
+    color: #93a1a1;
+    border: 1px solid #586e75;
+}}
+
+body.solardark-theme .service a {{
+    color: #268bd2;
+}}
+
+body.solardark-theme .service a:hover {{
+    color: #268bd2;
+}}
+
+/* Hover effects for category containers and services */
+body.solardark-theme .category-container:hover {{
+    background-color: #2a3c3a;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}}
+
+body.solardark-theme .service:hover {{
+    background-color: #586e75;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }}
 
 
@@ -197,26 +257,26 @@ body.solardark-theme .category-container {{
 }}
 
 @media (max-width: 1024px) {{
-    .category-container {
+    .category-container {{
         width: calc(50% - 20px);
-    }
-    .service {
+    }}
+    .service {{
         width: 48%;
-    }
+    }}
 }}
 
 @media (max-width: 600px) {{
-    .category-container {
+    .category-container {{
         width: 100%;
-    }
-    .service {
+    }}
+    .service {{
         width: 100%;
-    }
+    }}
 }}
 
         </style>
     </head>
-    <body>
+    <body class="{theme_class}-theme">
         <div class="container">
             <h1 style="width: 100%; text-align: center;">{page_title}</h1>
     """

@@ -7,6 +7,7 @@ COPY ./src/* /app
 
 ENV PORT=8577
 ENV TITLE="GENERIK DASHBOARD"
+ENV THEME="solarlight"
 
 EXPOSE 8577
 

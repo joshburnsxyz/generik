@@ -90,7 +90,8 @@ def save_html_to_file(html_content, filename="index.html"):
 
 # Function to start the HTTP server
 def start_http_server(port):
-    os.chdir("/var/www/html")
+    web_dir = Path('/var/www/html')
+    os.chdir(web_dir)
     httpd = socketserver.TCPServer(("", port), http.server.SimpleHTTPRequestHandler)
     logger.info(f"Serving at http://0.0.0.0:{port}")
     httpd.serve_forever()

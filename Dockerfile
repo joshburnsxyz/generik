@@ -1,5 +1,11 @@
 FROM python:3.11-slim
 
+LABEL org.opencontainers.image.authors="joshburnsxyz"
+LABEL org.opencontainers.image.url="https://github.com/joshburnsxyz/generik"
+LABEL org.opencontainers.image.source="https://github.com/joshburnsxyz/generik"
+LABEL org.opencontainers.image.title="Generik"
+LABEL org.opencontainers.image.description="Simple, Static service dashboard generator for Self Hosters and Home Labbers."
+
 WORKDIR /app
 
 RUN mkdir -p /var/www/html

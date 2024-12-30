@@ -34,7 +34,7 @@ def read_services_from_csv(csv_file):
         logger.error(f"Error reading {csv_file}: {e}")
         exit(1)
 
-# Function to generate HTML content for the dashboard
+# Function to generate HTML content for the dashboard by replacing placeholders in the template
 def generate_dashboard_html(services, page_title, theme_class, footer_content):
     services_json = json.dumps(services)
     categories = {}
@@ -42,44 +42,37 @@ def generate_dashboard_html(services, page_title, theme_class, footer_content):
     for service in services:
         categories.setdefault(service['category'], []).append(service)
 
-    html_content = f"""
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="/assets/main.css" />
-        <link rel="stylesheet" href="/assets/themes.css" />
-        <title>{page_title}</title>
-        <style>
-            
-        </style>
-    </head>
-    <body class="{theme_class}-theme">
-        <div class="container">
-            <h1 style="width: 100%; text-align: center;">{page_title}</h1>
-    """
+    # Load the external HTML template
+    template_path = Path('/app/template.html')
+    if not template_path.exists():
+        logger.error("HTML template file 'template.html' not found!")
+        exit(1)
 
+    with open(template_path, 'r') as template_file:
+        html_template = template_file.read()
+
+    # Generate the categories and services HTML content
+    category_html = ""
     for category, services_in_category in categories.items():
-        html_content += f'''
+        category_html += f'''
         <div class="category-container">
             <div class="category-title">{category}</div>
             <div class="service-container">
         '''
         for service in services_in_category:
-            html_content += f'''
+            category_html += f'''
             <div class="service" id="service-{service['name']}">
                 <a href="{service['url']}" target="_blank">{service['name']}</a>
             </div>
             '''
-        html_content += "</div></div>"
+        category_html += "</div></div>"
 
-    html_content += f"""
-        <footer>{footer_content}</footer>
-        </div>
-    </body>
-    </html>
-    """
+    # Replace placeholders in the template with actual content
+    html_content = html_template.replace("{{page_title}}", page_title)
+    html_content = html_content.replace("{{theme_class}}", theme_class)
+    html_content = html_content.replace("{{category_html}}", category_html)
+    html_content = html_content.replace("{{footer_content}}", footer_content)
+
     return html_content
 
 # Function to save the HTML file
@@ -104,10 +97,10 @@ def main():
     footer_content = os.getenv('FOOTER', '<p>Built by <a href="https://github.com/joshburnsxyz">Josh Burns</a></p>')
 
     if not page_title:
-        logger.error("Error: Missing required environment variables TITLE")
+        logger.error("Error: Missing required environment variable TITLE")
         exit(1)    
     if not app_port:
-        logger.error("Error: Missing required environment variables PORT")
+        logger.error("Error: Missing required environment variable PORT")
         exit(1)
 
     csv_file = "/config/services.csv"

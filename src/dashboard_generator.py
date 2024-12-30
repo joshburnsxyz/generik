@@ -103,8 +103,11 @@ def main():
     theme_class = os.getenv('THEME', 'light')
     footer_content = os.getenv('FOOTER', '<p>Built by <a href="https://github.com/joshburnsxyz">Josh Burns</a></p>')
 
-    if not page_title or not app_port:
-        logger.error("Error: Missing required environment variables TITLE or PORT")
+    if not page_title:
+        logger.error("Error: Missing required environment variables TITLE")
+        exit(1)    
+    if not app_port:
+        logger.error("Error: Missing required environment variables PORT")
         exit(1)
 
     csv_file = "/config/services.csv"

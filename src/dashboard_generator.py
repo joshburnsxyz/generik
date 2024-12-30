@@ -6,11 +6,15 @@ import socketserver
 from pathlib import Path
 import logging
 
+# Global logger object
+logging.basicConfig(filename='/config/generik.log', level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 # Function to read CSV and return a list of services
 def read_services_from_csv(csv_file):
     services = []
     if not Path(csv_file).exists():
-        logging.debug(f"No {csv_file} file found, creating a blank one at {csv_file}")
+        logger.debug(f"No {csv_file} file found, creating a blank one at {csv_file}")
         # Create a default CSV file with sample services
         with open(csv_file, "w") as f:
             f.write("Name,URL,Category\nGithub,https://github.com,Developer\nYoutube,https://youtube.com,Media")
@@ -28,17 +32,17 @@ def read_services_from_csv(csv_file):
                         'category': row['Category']
                     })
                 else:
-                    logging.debug(f"Skipping malformed row: {row}")
+                    logger.debug(f"Skipping malformed row: {row}")
         
         # If services list is empty, fill with default data
         if not services:
-            logging.warning(f"Warning: The {csv_file} file is empty or malformed. Creating a default set of services.")
+            logger.warning(f"Warning: The {csv_file} file is empty or malformed. Creating a default set of services.")
             with open(csv_file, "w") as f:
                 f.write("Name,URL,Category\nGithub,https://github.com,Developer\nYoutube,https://youtube.com,Media")
             # Re-read after writing default content
             services = read_services_from_csv(csv_file)
     except Exception as e:
-        logging.error(f"Error reading {csv_file}: {e}")
+        logger.error(f"Error reading {csv_file}: {e}")
         exit(1)
 
     return services
@@ -325,14 +329,14 @@ def save_html_to_file(html_content, filename="index.html"):
     output_file = output_dir / filename
     with open(output_file, "w") as file:
         file.write(html_content)
-    logging.debug(f"HTML file saved to {output_file}")
+    logger.debug(f"HTML file saved to {output_file}")
 
 # Function to start the HTTP server
 def start_http_server(port):
     os.chdir("/var/www/html")  # Set the working directory to where the HTML file is saved
     handler = http.server.SimpleHTTPRequestHandler
     httpd = socketserver.TCPServer(("", port), handler)
-    logging.info(f"Serving at http://localhost:{port}")
+    logger.info(f"Serving at http://localhost:{port}")
     httpd.serve_forever()
 
 # Main function
@@ -343,10 +347,10 @@ def main():
     selected_theme = os.getenv('THEME', 'light_theme')  # Default theme if not set
 
     if not page_title:
-        logging.error("Error: Missing required environment variable TITLE")
+        logger.error("Error: Missing required environment variable TITLE")
         exit(1)
     if not app_port:
-        logging.error("Error: Missing required environment variable PORT")
+        logger.error("Error: Missing required environment variable PORT")
         exit(1)
 
     csv_file = "/config/services.csv"  # Mount /config as a bind directory from Docker and create services.csv in there

@@ -54,96 +54,133 @@ def generate_dashboard_html(services, page_title):
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>{page_title}</title>
         <style>
-            body {{
-                font-family: Arial, sans-serif;
-                margin: 0;
-                padding: 0;
-                background-color: #f4f4f4;
-            }}
-            .container {{
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: space-between;
-                gap: 20px;  /* Adds spacing between category tiles */
-                padding: 20px;
-                max-width: 1200px;
-                margin: 0 auto;
-            }}
-            .category-container {{
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-                align-items: stretch;
-                background-color: #fff;
-                border-radius: 10px;
-                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-                width: calc(33% - 20px);  /* Three categories per row */
-                box-sizing: border-box;
-                transition: box-shadow 0.3s ease;
-                margin: 10px;
-                padding: 10px;
-            }}
-            .category-container:hover {{
-                box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-            }}
-            .category-title {{
-                font-size: 1.5em;
-                font-weight: bold;
-                color: #333;
-                margin-bottom: 15px;
-                text-align: center;
-                padding: 10px;
-                background-color: #f0f0f0;
-                border-radius: 5px;
-            }}
-            .service-container {{
-                display: flex;
-                flex-wrap: wrap;
-                gap: 10px;
-                justify-content: center;
-            }}
-            .service {{
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                background-color: #fff;
-                padding: 10px;
-                border-radius: 8px;
-                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-                width: 45%;  /* Two services per row inside each category */
-                box-sizing: border-box;
-                text-align: center;
-                transition: box-shadow 0.3s ease;
-            }}
-            .service:hover {{
-                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            }}
-            .service a {{
-                text-decoration: none;
-                color: #333;
-                font-size: 1.1em;
-                font-weight: bold;
-                display: block;
-            }}
-            .service a:hover {{
-                color: #007BFF;
-            }}
-            @media (max-width: 1024px) {{
-                .category-container {{
-                    width: calc(50% - 20px);  /* Two categories per row on tablets */
-                }}
-                .service {{
-                    width: 48%;  /* Two services per row inside each category */
-                }}
-            }}
-            @media (max-width: 600px) {{
-                .category-container {{
-                    width: 100%;  /* One category per row on mobile */
-                }}
-                .service {{
-                    width: 100%;  /* One service per row inside each category */
-                }}
-            }}
+/* Default Theme (Light Theme) */
+body {{
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}}
+
+/* Dark Theme */
+body.dark-theme {{
+    background-color: #333;
+    color: #fff;
+}}
+
+body.dark-theme .container {{
+    background-color: #444;
+}}
+
+body.dark-theme .category-container {{
+    background-color: #555;
+    color: #ddd;
+}}
+
+/* Blue Theme */
+body.blue-theme {{
+    background-color: #f0f8ff;
+    color: #1e3a56;
+}}
+
+body.blue-theme .container {{
+    background-color: #e6f0fa;
+}}
+
+body.blue-theme .category-container {{
+    background-color: #cce0ff;
+    color: #1e3a56;
+}}
+
+/* General styling for the tiles */
+.container {{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}}
+
+.category-container {{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: stretch;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: calc(33% - 20px);
+    box-sizing: border-box;
+    transition: box-shadow 0.3s ease;
+    margin: 10px;
+    padding: 10px;
+}}
+
+.category-title {{
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 15px;
+    text-align: center;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+}}
+
+.service-container {{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}}
+
+.service {{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 45%;
+    box-sizing: border-box;
+    text-align: center;
+    transition: box-shadow 0.3s ease;
+}}
+
+.service a {{
+    text-decoration: none;
+    color: #333;
+    font-size: 1.1em;
+    font-weight: bold;
+    display: block;
+}}
+
+.service a:hover {{
+    color: #007BFF;
+}}
+
+@media (max-width: 1024px) {{
+    .category-container {
+        width: calc(50% - 20px);
+    }
+    .service {
+        width: 48%;
+    }
+}}
+
+@media (max-width: 600px) {{
+    .category-container {
+        width: 100%;
+    }
+    .service {
+        width: 100%;
+    }
+}}
+
         </style>
     </head>
     <body>

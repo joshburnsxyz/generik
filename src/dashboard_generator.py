@@ -5,6 +5,8 @@ import http.server
 import socketserver
 from pathlib import Path
 import logging
+import signal
+import sys
 
 # Global logger setup
 logging.basicConfig(filename='/config/generik.log', level=logging.INFO)
@@ -88,6 +90,11 @@ def start_http_server(port):
     httpd = socketserver.TCPServer(("", port), http.server.SimpleHTTPRequestHandler)
     logger.info(f"Serving at http://0.0.0.0:{port}")
     httpd.serve_forever()
+    signal.signal(signal.SIGINT, shutdown_server)
+
+def shutdown_server(signal, frame):
+    logger.info("Shutting down the server.")
+    sys.exit(0)
 
 # Main function
 def main():

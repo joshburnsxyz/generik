@@ -2,6 +2,9 @@
 
 TAGVAL=0.1.0
 
+git tag $TAGVAL
+git push --all
+
 # AMD64
 docker buildx build --platform linux/amd64 -t joshburnsxyz/generik:latest .
 docker buildx build --platform linux/amd64 -t joshburnsxyz/generik:$TAGVAL .

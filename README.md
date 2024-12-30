@@ -2,6 +2,9 @@
 
 Simple static dashboard for self-hosters 
 
+![Docker Pulls](https://img.shields.io/docker/pulls/joshburnsxyz/generik)
+
+
 ## Features
 - **Dynamic Dashboard**: Renders services grouped by category in a clean, user-friendly interface.
 - **Themes**: Supports different themes including Light, Dark, Blue, and Solarized (light and dark) inspired themes.

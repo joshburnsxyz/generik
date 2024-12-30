@@ -1,0 +1,119 @@
+/* Dark Theme */
+body.dark-theme {
+    background-color: #333;
+    color: #fff;
+}
+
+body.dark-theme .container {
+    background-color: #444;
+}
+
+body.dark-theme .category-container {
+    background-color: #555;
+    color: #ddd;
+}
+
+/* Blue Theme */
+body.blue-theme {
+    background-color: #f0f8ff;
+    color: #1e3a56;
+}
+
+body.blue-theme .container {
+    background-color: #e6f0fa;
+}
+
+body.blue-theme .category-container {
+    background-color: #cce0ff;
+    color: #1e3a56;
+}
+
+/* Solarlight Theme */
+body.solarlight-theme {
+    background-color: #fdf6e3;
+    color: #657b83;
+}
+
+body.solarlight-theme .container {
+    background-color: #fdf6e3;
+    color: #657b83;
+}
+
+body.solarlight-theme .category-container {
+    background-color: #eee8d5;
+    color: #586e75;
+}
+
+body.solarlight-theme .category-title {
+    background-color: #93a1a1;
+    color: #fdf6e3;
+}
+
+body.solarlight-theme .service {
+    background-color: #fdf6e3;
+    color: #657b83;
+    border: 1px solid #93a1a1;
+}
+
+body.solarlight-theme .service a {
+    color: #268bd2;
+}
+
+body.solarlight-theme .service a:hover {
+    color: #268bd2;
+}
+
+body.solarlight-theme .category-container:hover {
+    background-color: #dce0e0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+body.solarlight-theme .service:hover {
+    background-color: #eee8d5;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Solardark Theme */
+body.solardark-theme {
+    background-color: #002b36;
+    color: #93a1a1;
+}
+
+body.solardark-theme .container {
+    background-color: #002b36;
+    color: #93a1a1;
+}
+
+body.solardark-theme .category-container {
+    background-color: #073642;
+    color: #93a1a1;
+}
+
+body.solardark-theme .category-title {
+    background-color: #586e75;
+    color: #fdf6e3;
+}
+
+body.solardark-theme .service {
+    background-color: #073642;
+    color: #93a1a1;
+    border: 1px solid #586e75;
+}
+
+body.solardark-theme .service a {
+    color: #268bd2;
+}
+
+body.solardark-theme .service a:hover {
+    color: #268bd2;
+}
+
+body.solardark-theme .category-container:hover {
+    background-color: #2a3c3a;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+body.solardark-theme .service:hover {
+    background-color: #586e75;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}

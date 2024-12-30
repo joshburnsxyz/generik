@@ -2,7 +2,11 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-COPY ./src/* /app
+RUN mkdir -p /var/www/html
+
+COPY ./src/dashboard_generator.py /app
+COPY ./src/themes.css /var/www/html
+
 # RUN pip install --no-cache-dir -r requirements.txt
 
 ENV PORT=8577

@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 def read_services_from_csv(csv_file):
     services = []
     if not Path(csv_file).exists():
-        logger.debug(f"No {csv_file} file found, creating a blank one at {csv_file}")
+        logger.info(f"No {csv_file} file found, creating a blank one at {csv_file}")
         # Create a default CSV file with sample services
         with open(csv_file, "w") as f:
             f.write("Name,URL,Category\nGithub,https://github.com,Developer\nYoutube,https://youtube.com,Media")
@@ -22,6 +22,7 @@ def read_services_from_csv(csv_file):
     # Read the CSV file and parse the services
     try:
         with open(csv_file, mode='r') as file:
+            logger.info(f"{csv_file} file found")
             reader = csv.DictReader(file)
             for row in reader:
                 # Check that necessary columns exist
@@ -32,11 +33,11 @@ def read_services_from_csv(csv_file):
                         'category': row['Category']
                     })
                 else:
-                    logger.debug(f"Skipping malformed row: {row}")
+                    logger.info(f"Skipping malformed row: {row}")
         
         # If services list is empty, fill with default data
         if not services:
-            logger.warning(f"Warning: The {csv_file} file is empty or malformed. Creating a default set of services.")
+            logger.error(f"Warning: The {csv_file} file is empty or malformed. Creating a default set of services.")
             with open(csv_file, "w") as f:
                 f.write("Name,URL,Category\nGithub,https://github.com,Developer\nYoutube,https://youtube.com,Media")
             # Re-read after writing default content

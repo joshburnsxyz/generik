@@ -339,7 +339,7 @@ def main():
     # Pull in settings from environment
     page_title = os.getenv('TITLE', 'GENERIK DASHBOARD')  # Default title if not set
     app_port = int(os.getenv('PORT', 5877))  # Default port if not set
-    selected_theme = os.getenv('THEME', 'light_theme')  # Default port if not set
+    selected_theme = os.getenv('THEME', 'light_theme')  # Default theme if not set
 
     if not page_title:
         print("Error: Missing required environment variable TITLE")

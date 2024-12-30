@@ -8,6 +8,13 @@ from pathlib import Path
 # Function to read CSV and return a list of services
 def read_services_from_csv(csv_file):
     services = []
+    if not Path(csv_file).exists():
+        print(f"No {csv_file} file found, creating a blank one at {csv_file}")
+        # Create a default CSV file with sample services
+        with open(csv_file, "w") as f:
+            f.write("Name,URL,Category\nGithub,https://github.com,Developer\nYoutube,https://youtube.com,Media")
+    
+    # Read the CSV file and parse the services
     try:
         with open(csv_file, mode='r') as file:
             reader = csv.DictReader(file)
@@ -18,18 +25,18 @@ def read_services_from_csv(csv_file):
                     'category': row['Category']
                 })
         if not services:
-            raise ValueError("CSV file is empty")
-    except FileNotFoundError:
-        print(f"Error: The CSV file '{csv_file}' was not found.")
+            print(f"Warning: The {csv_file} file is empty. Creating a default set of services.")
+            with open(csv_file, "w") as f:
+                f.write("Name,URL,Category\nGithub,https://github.com,Developer\nYoutube,https://youtube.com,Media")
+            services = read_services_from_csv(csv_file)  # Re-read after writing default content
+    except Exception as e:
+        print(f"Error reading {csv_file}: {e}")
         exit(1)
-    except ValueError as e:
-        print(f"Error: {e}")
-        exit(1)
+
     return services
 
 # Function to generate the HTML content
 def generate_dashboard_html(services, page_title):
-    # Serialize services data to JSON format
     services_json = json.dumps(services)
 
     html_content = f"""
@@ -126,7 +133,7 @@ def generate_dashboard_html(services, page_title):
     return html_content
 
 # Function to save HTML to a file
-def save_html_to_file(html_content, filename="dashboard.html"):
+def save_html_to_file(html_content, filename="index.html"):
     output_dir = Path("/var/www/html")
     output_dir.mkdir(parents=True, exist_ok=True)
     output_file = output_dir / filename

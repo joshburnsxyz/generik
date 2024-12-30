@@ -61,53 +61,96 @@ def generate_dashboard_html(services, page_title):
                 background-color: #f4f4f4;
             }}
             .container {{
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                gap: 20px;  /* Adds spacing between category tiles */
+                padding: 20px;
                 max-width: 1200px;
                 margin: 0 auto;
-                padding: 20px;
             }}
             .category-container {{
-                margin-bottom: 40px;
-                border: 2px solid #ddd;
-                border-radius: 10px;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                align-items: stretch;
                 background-color: #fff;
+                border-radius: 10px;
                 box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-                padding: 15px;
+                width: calc(33% - 20px);  /* Three categories per row */
+                box-sizing: border-box;
+                transition: box-shadow 0.3s ease;
+                margin: 10px;
+                padding: 10px;
             }}
-            .category {{
-                font-size: 1.6em;
+            .category-container:hover {{
+                box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            }}
+            .category-title {{
+                font-size: 1.5em;
                 font-weight: bold;
                 color: #333;
                 margin-bottom: 15px;
-                text-transform: uppercase;
+                text-align: center;
                 padding: 10px;
                 background-color: #f0f0f0;
                 border-radius: 5px;
             }}
+            .service-container {{
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+                justify-content: center;
+            }}
             .service {{
                 display: flex;
-                justify-content: space-between;
+                justify-content: center;
                 align-items: center;
                 background-color: #fff;
                 padding: 10px;
-                margin: 5px 0;
-                border-radius: 5px;
+                border-radius: 8px;
                 box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                width: 45%;  /* Two services per row inside each category */
+                box-sizing: border-box;
+                text-align: center;
+                transition: box-shadow 0.3s ease;
+            }}
+            .service:hover {{
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
             }}
             .service a {{
                 text-decoration: none;
                 color: #333;
                 font-size: 1.1em;
+                font-weight: bold;
+                display: block;
             }}
-            .service:hover {{
-                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            .service a:hover {{
+                color: #007BFF;
+            }}
+            @media (max-width: 1024px) {{
+                .category-container {{
+                    width: calc(50% - 20px);  /* Two categories per row on tablets */
+                }}
+                .service {{
+                    width: 48%;  /* Two services per row inside each category */
+                }}
+            }}
+            @media (max-width: 600px) {{
+                .category-container {{
+                    width: 100%;  /* One category per row on mobile */
+                }}
+                .service {{
+                    width: 100%;  /* One service per row inside each category */
+                }}
             }}
         </style>
     </head>
     <body>
         <div class="container">
-            <h1>{page_title}</h1>
+            <h1 style="width: 100%; text-align: center;">{page_title}</h1>
     """
-    
+
     # Group services by category
     categories = {}
     for service in services:
@@ -115,21 +158,26 @@ def generate_dashboard_html(services, page_title):
         if category not in categories:
             categories[category] = []
         categories[category].append(service)
-    
-    # Add services to HTML content, grouped by categories
+
+    # Create category containers with service tiles inside each category
     for category, services_in_category in categories.items():
         html_content += f'''
         <div class="category-container">
-            <div class="category">{category}</div>
+            <div class="category-title">{category}</div>
+            <div class="service-container">
         '''
+        
+        # Add each service as a tile inside the category container
         for service in services_in_category:
             html_content += f'''
             <div class="service" id="service-{service['name']}">
                 <a href="{service['url']}" target="_blank">{service['name']}</a>
             </div>
             '''
-        html_content += "</div>"  # Close category-container
-    
+        
+        # Closing tags for category container
+        html_content += "</div></div>"
+
     # Closing HTML tags
     html_content += f"""
         </div>

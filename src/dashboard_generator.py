@@ -57,7 +57,7 @@ def read_services_from_csv(csv_file):
         exit(1)
 
 # Function to generate HTML content for the dashboard by replacing placeholders in the template
-def generate_dashboard_html(services, page_title, theme_class, footer_content):
+def generate_dashboard_html(services, page_title, theme_class, footer_content, icon_script):
     services_json = json.dumps(services)
     categories = {}
 
@@ -95,6 +95,12 @@ def generate_dashboard_html(services, page_title, theme_class, footer_content):
     html_content = html_content.replace("{{category_html}}", category_html)
     html_content = html_content.replace("{{footer_content}}", footer_content)
 
+    if icon_script == "dashboard":
+        html_content = html_content.replace("{{icon_script}}", "<script type=\"text/javascript\" src=\"/assets/dashboard-icons.js\"></script>")
+    if icon_script == "fontawesome":
+        html_content = html_content.replace("{{icon_script}}", "<script type=\"text/javascript\" src=\"/assets/fa-icons.js\"></script>")
+    if icon_script == "none":
+        html_content = html_content.replace("{{icon_script}}", "")
     return html_content
 
 # Function to save the HTML file
@@ -124,6 +130,7 @@ def main():
     app_port = int(os.getenv('PORT', 5877))
     theme_class = os.getenv('THEME', 'light')
     footer_content = os.getenv('FOOTER', '<p>Built by <a href="https://github.com/joshburnsxyz">Josh Burns</a></p>')
+    icon_script = os.getenv('ICONS', 'dashboard')
 
     if not page_title:
         logger.error("Error: Missing required environment variable TITLE")
@@ -137,7 +144,7 @@ def main():
     csv_file = "/config/services.csv"
     services = read_services_from_csv(csv_file)
     logger.debug("SERVICES FILE LOADED")
-    html_content = generate_dashboard_html(services, page_title, theme_class, footer_content)
+    html_content = generate_dashboard_html(services, page_title, theme_class, footer_content, icon_script)
     save_html_to_file(html_content)
     logger.debug("HTML FILE GENERATED")
     start_http_server(app_port)

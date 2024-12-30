@@ -141,7 +141,7 @@ def save_html_to_file(html_content, filename="index.html"):
 def start_http_server(port):
     os.chdir("/var/www/html")
     httpd = socketserver.TCPServer(("", port), http.server.SimpleHTTPRequestHandler)
-    logger.info(f"Serving at http://localhost:{port}")
+    logger.info(f"Serving at http://0.0.0.0:{port}")
     httpd.serve_forever()
 
 # Main function

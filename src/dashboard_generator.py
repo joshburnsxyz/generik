@@ -48,60 +48,11 @@ def generate_dashboard_html(services, page_title, theme_class, footer_content):
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="themes.css" />
+        <link rel="stylesheet" href="/assets/main.css" />
+        <link rel="stylesheet" href="/assets/themes.css" />
         <title>{page_title}</title>
         <style>
-            body {{
-                font-family: Arial, sans-serif;
-                background-color: #f4f4f4;
-                color: #333;
-                margin: 0;
-                padding: 0;
-            }}
-            .container {{
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: space-between;
-                gap: 20px;
-                padding: 20px;
-                max-width: 1200px;
-                margin: 0 auto;
-            }}
-            .category-container {{
-                display: flex;
-                flex-direction: column;
-                width: calc(33% - 20px);
-                box-sizing: border-box;
-                padding: 10px;
-                background-color: #fff;
-                border-radius: 10px;
-                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-                margin: 10px;
-            }}
-            .category-title {{
-                font-size: 1.5em;
-                text-align: center;
-                padding: 10px;
-                background-color: #f0f0f0;
-                border-radius: 5px;
-            }}
-            .service {{
-                background-color: #fff;
-                padding: 10px;
-                border-radius: 8px;
-                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-                text-align: center;
-                margin-bottom: 10px;
-            }}
-            .service a {{
-                text-decoration: none;
-                color: #333;
-                font-size: 1.1em;
-                font-weight: bold;
-            }}
-            .service a:hover {{
-                color: #007BFF;
-            }}
+            
         </style>
     </head>
     <body class="{theme_class}-theme">

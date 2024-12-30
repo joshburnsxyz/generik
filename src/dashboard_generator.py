@@ -43,12 +43,12 @@ def read_services_from_csv(csv_file):
     return services
 
 # Function to generate the HTML content
-def generate_dashboard_html(services, page_title):
+def generate_dashboard_html(services, page_title, theme_class):
     services_json = json.dumps(services)
 
     html_content = f"""
     <!DOCTYPE html>
-    <html lang="en">
+    <html lang="en" class="{theme_class}>
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -92,6 +92,39 @@ body.blue-theme .category-container {{
     background-color: #cce0ff;
     color: #1e3a56;
 }}
+
+/* Solarlight Theme */
+body.solarlight-theme {{
+    background-color: #fdf6e3;
+    color: #657b83;
+}}
+
+body.solarlight-theme .container {{
+    background-color: #fdf6e3;
+    color: #657b83;
+}}
+
+body.solarlight-theme .category-container {{
+    background-color: #eee8d5;
+    color: #586e75;
+}}
+
+/* Solardark Theme */
+body.solardark-theme {{
+    background-color: #002b36;
+    color: #93a1a1;
+}}
+
+body.solardark-theme .container {{
+    background-color: #002b36;
+    color: #93a1a1;
+}}
+
+body.solardark-theme .category-container {{
+    background-color: #073642;
+    color: #93a1a1;
+}}
+
 
 /* General styling for the tiles */
 .container {{
@@ -246,6 +279,7 @@ def main():
     # Pull in settings from environment
     page_title = os.getenv('TITLE', 'GENERIK DASHBOARD')  # Default title if not set
     app_port = int(os.getenv('PORT', 5877))  # Default port if not set
+    selected_theme = os.getenv('THEME', 'light_theme')  # Default port if not set
 
     if not page_title:
         print("Error: Missing required environment variable TITLE")
@@ -256,7 +290,7 @@ def main():
 
     csv_file = "/config/services.csv"  # Mount /config as a bind directory from Docker and create services.csv in there
     services = read_services_from_csv(csv_file)
-    html_content = generate_dashboard_html(services, page_title)
+    html_content = generate_dashboard_html(services, page_title, selected_theme)
     save_html_to_file(html_content)
     start_http_server(app_port)  # Start the HTTP server on the port defined by environment variable
 

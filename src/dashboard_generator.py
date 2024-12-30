@@ -9,7 +9,7 @@ import signal
 import sys
 
 # Global logger setup
-logging.basicConfig(filename='/config/generik.log', level=logging.INFO)
+logging.basicConfig(filename='/config/generik.log', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
 DEFAULT_CSV_CONTENT = "Name,URL,Category\nGithub,https://github.com,Developer\nYoutube,https://youtube.com,Media"

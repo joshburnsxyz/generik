@@ -21,4 +21,4 @@ ENV THEME="solarlight"
 
 EXPOSE 8577
 
-CMD [ "python", "/app/dashboard_generator.py" ]
+ENTRYPOINT [ "python", "/app/dashboard_generator.py" ]

@@ -1,6 +1,9 @@
 import csv
 import json
 import os
+import http.server
+import socketserver
+from pathlib import Path
 
 # Function to read CSV and return a list of services
 def read_services_from_csv(csv_file):
@@ -16,7 +19,7 @@ def read_services_from_csv(csv_file):
     return services
 
 # Function to generate the HTML content
-def generate_dashboard_html(services):
+def generate_dashboard_html(services, page_title):
     # Serialize services data to JSON format
     services_json = json.dumps(services)
 
@@ -26,7 +29,7 @@ def generate_dashboard_html(services):
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Service Dashboard</title>
+        <title>{page_title}</title>
         <style>
             body {{
                 font-family: Arial, sans-serif;
@@ -92,7 +95,7 @@ def generate_dashboard_html(services):
     </head>
     <body>
         <div class="container">
-            <h1>Self-Hosted Service Dashboard</h1>
+            <h1>{page_title}</h1>
     """
     
     # Group services by category
@@ -127,20 +130,18 @@ def generate_dashboard_html(services):
 
             function checkServiceStatus() {{
                 services.forEach(service => {{
-                    fetch(service.url, {{ method: 'GET', mode: 'no-cors' }})
-                        .then(response => {{
-                            if (response.status === 200) {{
-                                document.getElementById('status-' + service.name).classList.add('up');
-                                document.getElementById('status-' + service.name).classList.remove('down');
-                            }} else {{
-                                document.getElementById('status-' + service.name).classList.add('down');
-                                document.getElementById('status-' + service.name).classList.remove('up');
-                            }}
-                        }})
-                        .catch(() => {{
+                    fetch(service.url, {{ method: 'GET', mode: 'no-cors' }}).then(response => {{
+                        if (response.status === 200) {{
+                            document.getElementById('status-' + service.name).classList.add('up');
+                            document.getElementById('status-' + service.name).classList.remove('down');
+                        }} else {{
                             document.getElementById('status-' + service.name).classList.add('down');
                             document.getElementById('status-' + service.name).classList.remove('up');
-                        }});
+                        }}
+                    }}).catch(() => {{
+                        document.getElementById('status-' + service.name).classList.add('down');
+                        document.getElementById('status-' + service.name).classList.remove('up');
+                    }});
                 }});
             }}
 
@@ -155,16 +156,32 @@ def generate_dashboard_html(services):
 
 # Function to save HTML to a file
 def save_html_to_file(html_content, filename="dashboard.html"):
-    with open(filename, "w") as file:
+    output_dir = Path("/var/www/html")
+    output_dir.mkdir(parents=True, exist_ok=True)
+    output_file = output_dir / filename
+    with open(output_file, "w") as file:
         file.write(html_content)
+    print(f"HTML file saved to {output_file}")
+
+# Function to start the HTTP server
+def start_http_server(port):
+    os.chdir("/var/www/html")  # Set the working directory to where the HTML file is saved
+    handler = http.server.SimpleHTTPRequestHandler
+    httpd = socketserver.TCPServer(("", int(port)), handler)
+    print(f"Serving at http://localhost:{port}")
+    httpd.serve_forever()
 
 # Main function
 def main():
-    csv_file = "/config/services.csv" # Mount /config as a bind directory mount from docker and create services.csv in there
+    # Pull in settings from environment
+    page_title = os.environ['TITLE']
+    app_port = os.environ['PORT']
+
+    csv_file = "/config/services.csv"  # Mount /config as a bind directory from Docker and create services.csv in there
     services = read_services_from_csv(csv_file)
-    html_content = generate_dashboard_html(services)
+    html_content = generate_dashboard_html(services,page_title)
     save_html_to_file(html_content)
-    print("Dashboard HTML file generated successfully!")
+    start_http_server(app_port)  # Start the HTTP server on port defined by environment variable
 
 if __name__ == "__main__":
     main()

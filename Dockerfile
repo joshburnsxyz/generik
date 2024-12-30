@@ -20,7 +20,7 @@ COPY ./src/assets /var/www/html/assets
 ENV PORT=8577
 ENV TITLE="GENERIK DASHBOARD"
 ENV THEME="solarlight"
-ENV THEME="dashboard"
+ENV ICONS="dashboard"
 
 EXPOSE $PORT
 

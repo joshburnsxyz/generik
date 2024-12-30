@@ -109,9 +109,9 @@ def start_http_server(port):
     os.chdir(web_dir)
     httpd = socketserver.TCPServer(("", port), http.server.SimpleHTTPRequestHandler)
     logger.info(f"Serving at http://0.0.0.0:{port}")
-    httpd.serve_forever()
     signal.signal(signal.SIGINT, shutdown_server)
-
+    httpd.serve_forever()
+    
 def shutdown_server(signal, frame):
     logger.info("Shutting down the server.")
     sys.exit(0)

@@ -4,7 +4,7 @@ LABEL org.opencontainers.image.authors="joshburnsxyz"
 LABEL org.opencontainers.image.url="https://github.com/joshburnsxyz/generik"
 LABEL org.opencontainers.image.source="https://github.com/joshburnsxyz/generik"
 LABEL org.opencontainers.image.title="Generik"
-LABEL org.opencontainers.image.version="0.1.2"
+LABEL org.opencontainers.image.version="0.1.3"
 LABEL org.opencontainers.image.description="Simple, Static service dashboard generator for Self Hosters and Home Labbers."
 
 WORKDIR /app
